@@ -22,6 +22,7 @@ router.route('/seats').post((req, res) => {
   } else {
     db.seats.push({ id: uuid, day, seat, client, email });
     res.json({ message: 'OK' });
+    req.io.emit('seatsUpdated', req.body);
   }
 });
 

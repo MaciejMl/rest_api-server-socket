@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Progress, Alert } from 'reactstrap';
 import {
@@ -7,28 +7,35 @@ import {
   getRequests,
 } from '../../../redux/seatsRedux';
 import './SeatChooser.scss';
+import io from 'socket.io-client';
 
 const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
   const dispatch = useDispatch();
   const seats = useSelector(getSeats);
   const requests = useSelector(getRequests);
+  // eslint-disable-next-line
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    dispatch(loadSeatsRequest());
-  }, [dispatch]);
+    const newSocket = io('http://localhost:8000');
+    setSocket(newSocket);
 
-  useEffect(() => {
-    const refreshInterval = setInterval(() => {
-      dispatch(loadSeatsRequest());
-    }, 2 * 60 * 1000);
+    newSocket.on('seatsUpdated', (data) => {
+      dispatch(loadSeatsRequest(data));
+    });
 
     return () => {
-      clearInterval(refreshInterval);
+      newSocket.close();
     };
   }, [dispatch]);
 
   const isTaken = (seatId) => {
     return seats.some((item) => item.seat === seatId && item.day === chosenDay);
+  };
+
+  const countTakenSeats = () => {
+    const takenSeats = seats.filter((item) => isTaken(item.seat));
+    return takenSeats.length;
   };
 
   const prepareSeat = (seatId) => {
@@ -72,6 +79,9 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
           {[...Array(50)].map((x, i) => prepareSeat(i + 1))}
         </div>
       )}
+      <small id='pickHelpTwo' className='form-text text-muted ml-2 mb-4'>
+        Free seats: {50 - countTakenSeats()} / 50
+      </small>
       {requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending && (
         <Progress animated color='primary' value={50} />
       )}
