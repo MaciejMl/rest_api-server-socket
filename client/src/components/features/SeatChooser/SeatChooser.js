@@ -30,11 +30,14 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
   }, [dispatch]);
 
   const isTaken = (seatId) => {
-    return seats.some((item) => item.seat === seatId && item.day === chosenDay);
+    const taken = seats.some(
+      (item) => item.seat === seatId && item.day === chosenDay
+    );
+    return taken;
   };
 
   const countTakenSeats = () => {
-    const takenSeats = seats.filter((item) => isTaken(item.seat));
+    const takenSeats = seats.filter((item) => item.day === chosenDay);
     return takenSeats.length;
   };
 

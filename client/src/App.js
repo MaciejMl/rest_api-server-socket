@@ -11,9 +11,9 @@ import Order from './components/pages/Order/OrderPage.js';
 const App = () => (
   <MainLayout>
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/prices" element={<Prices />} />
-      <Route path="/order-a-ticket" element={<Order />} />
+      <Route path='/' element={<Home />} />
+      <Route path='/prices' element={<Prices />} />
+      <Route path='/order-a-ticket' element={<Order />} />
       <Route element={<NotFound />} />
     </Routes>
   </MainLayout>
