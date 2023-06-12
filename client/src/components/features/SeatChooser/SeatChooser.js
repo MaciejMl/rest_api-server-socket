@@ -17,7 +17,8 @@ const SeatChooser = ({ chosenDay, chosenSeat, updateSeat }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8000');
+    // const newSocket = io('http://localhost:8000');
+    const newSocket = io('http://restapi-server-socket.maciejml.repl.co');
     setSocket(newSocket);
 
     newSocket.on('seatsUpdated', (data) => {
