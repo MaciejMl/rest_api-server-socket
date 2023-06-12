@@ -36,7 +36,7 @@ const server = app.listen(process.env.PORT || 8000, () => {
 const io = socket(server, {
   cors: {
     // origin: 'http://localhost:3000',
-    origin: 'http://restapi-server-socket.maciejml.repl.co',
+    origin: 'https://restapi-server-socket.maciejml.repl.co',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
