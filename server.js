@@ -15,9 +15,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/NewWaveDB', {
-  useNewUrlParser: true,
-});
+// mongoose.connect('mongodb://localhost:27017/NewWaveDB', {  --> lokalna baza
+mongoose.connect(
+  'mongodb+srv://szypki:riPG4rPkiK77RBRQ@mytestingdb.unpaqol.mongodb.net/NewWaveDB?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+  }
+);
 const db = mongoose.connection;
 
 db.once('open', () => {
